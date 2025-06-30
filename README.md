@@ -1,5 +1,17 @@
 # Benchmark Datasets
 
+## 1. Setup
+
+```
+pyenv local 3.11
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## 2. Create Datasets
+
 ### Tang, Qingtao, et al. "Student-t process regression with student-t likelihood." International Joint Conference on Artificial Intelligence 2017. Association for the Advancement of Artificial Intelligence (AAAI), 2017.
 
 1. Install dat files for Tang 2017
