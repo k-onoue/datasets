@@ -237,11 +237,11 @@ if __name__ == '__main__':
     # --- 3. Process Datasets from ucimlrepo ---
     process_uci_repo_dataset(fetch_id=9, dataset_name='MPG', output_dir=output_dir, n_splits=num_splits)
     
-    def concrete_subset(train_f, train_t, test_f, test_t):
+    def extract_subset(train_f, train_t, test_f, test_t):
         return train_f[:320], train_t[:320], test_f[:80], test_t[:80]
-    process_uci_repo_dataset(fetch_id=165, dataset_name='Concrete', output_dir=output_dir, n_splits=num_splits, subset_logic=concrete_subset)
+    process_uci_repo_dataset(fetch_id=165, dataset_name='Concrete', output_dir=output_dir, n_splits=num_splits, subset_logic=extract_subset)
     
-    process_uci_repo_dataset(fetch_id=275, dataset_name='Bike', output_dir=output_dir, n_splits=num_splits, target_col_name='cnt')
+    process_uci_repo_dataset(fetch_id=275, dataset_name='Bike', output_dir=output_dir, n_splits=num_splits, target_col_name='cnt', subset_logic=extract_subset)
 
     print("="*50)
     print("All processing tasks complete.")
