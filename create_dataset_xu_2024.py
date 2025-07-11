@@ -8,6 +8,7 @@ from io import StringIO, BytesIO
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
+from ucimlrepo import fetch_ucimlrepo
 
 
 def download_and_save_datasets(output_dir='temp'):
@@ -21,13 +22,38 @@ def download_and_save_datasets(output_dir='temp'):
     print(f"Datasets will be saved in the '{output_dir}/' directory.")
 
     # --- 1. Concrete Slump Test Data ---
+    # try:
+    #     print("\n[1/8] Downloading Concrete Data...")
+    #     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/slump/slump_test.data"
+    #     df = pd.read_csv(url)
+    #     df.columns = df.columns.str.strip()
+    #     df.to_csv(os.path.join(output_dir, 'concrete_slump.csv'), index=False)
+    #     print(" -> Success: Saved concrete_slump.csv")
+    # except Exception as e:
+    #     print(f" -> Failed to download Concrete data. Error: {e}")
+
     try:
+        # Concrete Compressive Strength
+
+        # from ucimlrepo import fetch_ucirepo 
+        
+        # # fetch dataset 
+        # concrete_compressive_strength = fetch_ucirepo(id=165) 
+        
+        # # data (as pandas dataframes) 
+        # X = concrete_compressive_strength.data.features 
+        # y = concrete_compressive_strength.data.targets 
+        
+        # # metadata 
+        # print(concrete_compressive_strength.metadata) 
+        
+        # # variable information 
+        # print(concrete_compressive_strength.variables) 
         print("\n[1/8] Downloading Concrete Data...")
-        url = "https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/slump/slump_test.data"
-        df = pd.read_csv(url)
-        df.columns = df.columns.str.strip()
-        df.to_csv(os.path.join(output_dir, 'concrete_slump.csv'), index=False)
-        print(" -> Success: Saved concrete_slump.csv")
+        concrete = fetch_ucimlrepo(id=165)
+        df_concrete = concrete.data
+        df_concrete.to_csv(os.path.join(output_dir, 'concrete_compressive_strength.csv'), index=False)
+        print(" -> Success: Saved concrete_compressive_strength.csv")
     except Exception as e:
         print(f" -> Failed to download Concrete data. Error: {e}")
 
@@ -97,31 +123,31 @@ def download_and_save_datasets(output_dir='temp'):
     except Exception as e:
         print(f" -> Failed to download Protein Structure data. Error: {e}")
 
-    # --- 8. Taxi Trip Fare Data (Kaggle) ---
-    print("\n[8/8] Instructions for Taxi Trip Fare Data:")
-    print(" -> This dataset is from the 'New York City Taxi Fare Prediction' Kaggle competition.")
-    print(" -> Due to its size, it must be downloaded using the Kaggle API.")
-    print(" -> Instructions:")
-    print("    1. Install the Kaggle library: pip install kaggle")
-    print("    2. Go to your Kaggle account, 'Settings' page, and click 'Create New Token'.")
-    print("    3. Place the downloaded 'kaggle.json' file in the required location (e.g., '~/.kaggle/').")
+    # # --- 8. Taxi Trip Fare Data (Kaggle) ---
+    # print("\n[8/8] Instructions for Taxi Trip Fare Data:")
+    # print(" -> This dataset is from the 'New York City Taxi Fare Prediction' Kaggle competition.")
+    # print(" -> Due to its size, it must be downloaded using the Kaggle API.")
+    # print(" -> Instructions:")
+    # print("    1. Install the Kaggle library: pip install kaggle")
+    # print("    2. Go to your Kaggle account, 'Settings' page, and click 'Create New Token'.")
+    # print("    3. Place the downloaded 'kaggle.json' file in the required location (e.g., '~/.kaggle/').")
     
-    try:
-        import kaggle
-        print("\nAttempting to download Taxi Fare data via Kaggle API...")
-        kaggle.api.authenticate()
-        kaggle.api.competition_download_files(
-            'new-york-city-taxi-fare-prediction',
-            path=output_dir,
-            quiet=False
-        )
-        zip_path = os.path.join(output_dir, 'new-york-city-taxi-fare-prediction.zip')
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(output_dir)
-        os.remove(zip_path)
-        print(f" -> Success: Taxi data downloaded and extracted to '{output_dir}/'")
-    except Exception as e:
-        print(f" -> Kaggle API download failed. Please ensure 'kaggle.json' is set up correctly or download manually. Error: {e}")
+    # try:
+    #     import kaggle
+    #     print("\nAttempting to download Taxi Fare data via Kaggle API...")
+    #     kaggle.api.authenticate()
+    #     kaggle.api.competition_download_files(
+    #         'new-york-city-taxi-fare-prediction',
+    #         path=output_dir,
+    #         quiet=False
+    #     )
+    #     zip_path = os.path.join(output_dir, 'new-york-city-taxi-fare-prediction.zip')
+    #     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    #         zip_ref.extractall(output_dir)
+    #     os.remove(zip_path)
+    #     print(f" -> Success: Taxi data downloaded and extracted to '{output_dir}/'")
+    # except Exception as e:
+    #     print(f" -> Kaggle API download failed. Please ensure 'kaggle.json' is set up correctly or download manually. Error: {e}")
 
     print("\n\nAll tasks complete.")
 
@@ -224,14 +250,14 @@ if __name__ == '__main__':
     download_and_save_datasets(output_dir=source_dir)
 
     datasets_to_process = {
-        'Concrete': ('concrete_slump.csv', 'SLUMP(cm)'),
+        'Concrete': ('concrete_compressive_strength.csv', 'Concrete compressive strength'),
         'Boston': ('boston_housing.csv', 'MEDV'),
         'Kin8nm': ('kin8nm.csv', 'y'),
         'Yacht': ('yacht_hydrodynamics.csv', 'residuary_resistance'),
         'Energy': ('energy_efficiency.csv', 'Y1'),
         'Elevators': ('elevators.csv', 'Goal'),
         'Protein': ('protein_structure.csv', 'RMSD'),
-        'Taxi': ('train.csv', 'fare_amount'), 
+        # 'Taxi': ('train.csv', 'fare_amount'), 
     }
     
     print("\n" + "="*50)
