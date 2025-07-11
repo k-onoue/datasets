@@ -8,7 +8,7 @@ from io import StringIO, BytesIO
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
-from ucimlrepo import fetch_ucimlrepo
+from ucimlrepo import fetch_ucirepo
 
 
 def download_and_save_datasets(output_dir='temp'):
@@ -50,7 +50,7 @@ def download_and_save_datasets(output_dir='temp'):
         # # variable information 
         # print(concrete_compressive_strength.variables) 
         print("\n[1/8] Downloading Concrete Data...")
-        concrete = fetch_ucimlrepo(id=165)
+        concrete = fetch_ucirepo(id=165)
         df_concrete = concrete.data
         df_concrete.to_csv(os.path.join(output_dir, 'concrete_compressive_strength.csv'), index=False)
         print(" -> Success: Saved concrete_compressive_strength.csv")
