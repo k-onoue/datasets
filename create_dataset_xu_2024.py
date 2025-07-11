@@ -51,7 +51,10 @@ def download_and_save_datasets(output_dir='temp'):
         # print(concrete_compressive_strength.variables) 
         print("\n[1/8] Downloading Concrete Data...")
         concrete = fetch_ucirepo(id=165)
-        df_concrete = concrete.data
+        X = concrete.data.features
+        y = concrete.data.targets
+        # combine features and targets into a single DataFrame
+        df_concrete = pd.concat([X, y], axis=1)
         df_concrete.to_csv(os.path.join(output_dir, 'concrete_compressive_strength.csv'), index=False)
         print(" -> Success: Saved concrete_compressive_strength.csv")
     except Exception as e:
@@ -275,10 +278,10 @@ if __name__ == '__main__':
     
     # Process Concrete with outliers
     process_dataset(
-        source_file_path=os.path.join(source_dir, 'concrete_slump.csv'),
+        source_file_path=os.path.join(source_dir, 'concrete_compressive_strength.csv'),
         output_dir=output_data_dir,
         dataset_name='Concrete',
-        target_column='SLUMP(cm)',
+        target_column='Concrete compressive strength',
         n_splits=num_splits,
         create_outliers=True
     )
