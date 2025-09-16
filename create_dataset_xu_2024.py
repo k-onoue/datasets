@@ -244,8 +244,8 @@ def process_dataset(source_file_path, output_dir, dataset_name, target_column, n
 
 if __name__ == '__main__':
     source_dir = "source_data_xu_2024"
-    output_data_dir = 'dataset_xu_2024'
-    num_splits = 5
+    output_data_dir = 'dataset_xu_2024_v2'
+    num_splits = 10
     
     print("\n" + "="*50)
     print("STEP 1: DOWNLOADING RAW DATASETS")
@@ -260,7 +260,7 @@ if __name__ == '__main__':
         'Energy': ('energy_efficiency.csv', 'Y1'),
         'Elevators': ('elevators.csv', 'Goal'),
         'Protein': ('protein_structure.csv', 'RMSD'),
-        # 'Taxi': ('train.csv', 'fare_amount'), 
+        'Taxi': ('taxi_subset.csv', 'fare_amount'), 
     }
     
     print("\n" + "="*50)
@@ -292,6 +292,16 @@ if __name__ == '__main__':
         output_dir=output_data_dir,
         dataset_name='Kin8nm',
         target_column='y',
+        n_splits=num_splits,
+        create_outliers=True
+    )
+
+    # Process Kin8nm with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'taxi_subset.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Taxi',
+        target_column='fare_amount',
         n_splits=num_splits,
         create_outliers=True
     )
