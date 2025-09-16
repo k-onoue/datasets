@@ -285,6 +285,56 @@ if __name__ == '__main__':
         n_splits=num_splits,
         create_outliers=True
     )
+
+    # Process Boston with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'boston_housing.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Boston',
+        target_column='MEDV',
+        n_splits=num_splits,
+        create_outliers=True
+    )
+
+    # Process Yacht with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'yacht_hydrodynamics.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Yacht',
+        target_column='residuary_resistance',
+        n_splits=num_splits,
+        create_outliers=True
+    )
+
+    # Process Energy with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'energy_efficiency.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Energy',
+        target_column='Y1',
+        n_splits=num_splits,
+        create_outliers=True
+    )
+
+    # Process Elevators with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'elevators.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Elevators',
+        target_column='Goal',
+        n_splits=num_splits,
+        create_outliers=True
+    )
+
+    # Process Protein with outliers
+    process_dataset(
+        source_file_path=os.path.join(source_dir, 'protein_structure.csv'),
+        output_dir=output_data_dir,
+        dataset_name='Protein',
+        target_column='RMSD',
+        n_splits=num_splits,
+        create_outliers=True
+    )
     
     # Process Kin8nm with outliers
     process_dataset(
