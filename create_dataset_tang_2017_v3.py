@@ -7,12 +7,10 @@ import io
 
 # --- Helper Functions for Specific Dataset Processing ---
 
-# MODIFICATION: Added 'create_outliers' parameter
 def process_dat_file(file_path, dataset_name, columns, feature_cols, target_col, output_dir, n_splits, create_outliers=False):
     """
     Generic function to parse .dat files, optionally add outliers, apply StandardScaler, split them, and save them.
     """
-    # MODIFICATION: Add suffix to dataset name if creating outliers
     original_dataset_name = dataset_name
     if create_outliers:
         dataset_name += '_Outliers'
@@ -39,21 +37,22 @@ def process_dat_file(file_path, dataset_name, columns, feature_cols, target_col,
             return
 
         X = df[feature_cols].values
-        y = df[target_col].values
+        # --- FIX: Ensure the target array is float type ---
+        y = df[target_col].values.astype(np.float64) 
 
-        # MODIFICATION: Outlier Injection Logic
         if create_outliers:
             print("--> Injecting outliers...")
             std_dev = np.std(y)
             n_outliers = int(len(y) * 0.05)
-            if n_outliers == 0: n_outliers = 1 # ensure at least one outlier for small datasets
+            if n_outliers == 0: n_outliers = 1
             
-            rng = np.random.RandomState(42) # for reproducibility
+            rng = np.random.RandomState(42)
             outlier_indices = rng.choice(len(y), n_outliers, replace=False)
-            y[outlier_indices] += 3 * std_dev
+            y[outlier_indices] += 3 * std_dev # This will now work correctly
 
         kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
         for fold, (train_index, test_index) in enumerate(kf.split(X, y)):
+            # ... (rest of the function is unchanged)
             save_path = os.path.join(save_path_base, f"split_{fold}")
             os.makedirs(save_path, exist_ok=True)
             
@@ -167,7 +166,6 @@ def process_uci_repo_dataset(fetch_id, dataset_name, output_dir, n_splits, targe
     Fetches a dataset from ucimlrepo, optionally adds outliers, applies StandardScaler, splits it, and saves it.
     """
     original_dataset_name = dataset_name
-    # MODIFICATION: Add suffix to dataset name if creating outliers
     if create_outliers:
         dataset_name += '_Outliers'
         print("-" * 20)
@@ -197,21 +195,22 @@ def process_uci_repo_dataset(fetch_id, dataset_name, output_dir, n_splits, targe
         full_df.dropna(inplace=True)
         
         X_np = full_df[feature_names].values
-        y_np = full_df[target_names].values.ravel() # Use ravel() to make it 1D
+        # --- FIX: Ensure the target array is float type ---
+        y_np = full_df[target_names].values.ravel().astype(np.float64)
 
-        # MODIFICATION: Outlier Injection Logic
         if create_outliers:
             print("--> Injecting outliers...")
             std_dev = np.std(y_np)
             n_outliers = int(len(y_np) * 0.05)
             if n_outliers == 0: n_outliers = 1
             
-            rng = np.random.RandomState(42) # for reproducibility
+            rng = np.random.RandomState(42)
             outlier_indices = rng.choice(len(y_np), n_outliers, replace=False)
-            y_np[outlier_indices] += 3 * std_dev
+            y_np[outlier_indices] += 3 * std_dev # This will now work correctly
 
         kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
         for fold, (train_index, test_index) in enumerate(kf.split(X_np)):
+            # ... (rest of the function is unchanged)
             train_features, test_features = X_np[train_index], X_np[test_index]
             train_target, test_target = y_np[train_index], y_np[test_index]
 

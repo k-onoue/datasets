@@ -244,7 +244,7 @@ def process_dataset(source_file_path, output_dir, dataset_name, target_column, n
 
 if __name__ == '__main__':
     source_dir = "source_data_xu_2024"
-    output_data_dir = 'dataset_xu_2024_v2'
+    output_data_dir = 'dataset_xu_2024_v3'
     num_splits = 10
     
     print("\n" + "="*50)
